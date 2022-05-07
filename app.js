@@ -15,8 +15,8 @@ const User = require("./models/user");
 
 const Schema = mongoose.Schema;
 
-const mongoDb =
-  "mongodb+srv://floweruser:Xyz123Abc@cluster0.bdd9x.mongodb.net/membersonly?retryWrites=true&w=majority";
+const mongoDb = process.env.MONGO;
+
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
@@ -58,7 +58,13 @@ passport.deserializeUser(function (id, done) {
 });
 
 app.use(express.static("public"));
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
