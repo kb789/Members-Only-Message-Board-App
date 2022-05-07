@@ -1,0 +1,45 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+  <header><%- include('../partials/header'); %></header>
+
+  <h1
+    class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
+  >
+    The Club
+  </h1>
+  <% if (user && user.status === false) {%>
+  <h1
+    class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
+  >
+    Join the Club!
+  </h1>
+  <form action="/join" method="POST" class="w-1/2 mx-auto mt-10 text-center">
+    <label for="secret" class="block mb-3">Enter the secret password</label>
+    <input
+      name="secret"
+      placeholder="secret"
+      type="text"
+      class="w-full p-2 mb-3 border border-gray-400 border-solid"
+    />
+
+    <button class="p-3 pl-5 pr-5 mt-5 text-white bg-green-500 rounded-lg">
+      Submit
+    </button>
+  </form>
+  <% } else if (user && user.status === true) {%>
+  <h1
+    class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
+  >
+    You're in the Club!
+  </h1>
+
+  <% } else {%>
+  <h1
+    class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
+  >
+    Please sign up to join the Club!
+  </h1>
+  <% } %>
+</body>

@@ -1,0 +1,38 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+  <header><%- include('../partials/header'); %></header>
+
+  <h1
+    class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
+  >
+    Welcome to Posts
+  </h1>
+  <% if (user) {%>
+  <form
+    action="/add-post"
+    method="POST"
+    class="w-1/2 mx-auto mt-10 text-center"
+  >
+    <label for="title" class="block mb-3">Title</label>
+    <input
+      name="title"
+      placeholder="title"
+      type="text"
+      class="w-full p-2 mb-3 border border-gray-400 border-solid"
+    />
+    <label for="message" class="block mb-3">New Message</label>
+    <textarea
+      name="message"
+      class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      id="message"
+      rows="3"
+      placeholder="Your message"
+    ></textarea>
+    <button class="p-3 pl-5 pr-5 mt-5 text-white bg-green-500 rounded-lg">
+      Submit
+    </button>
+  </form>
+  <% } else { %> <%} %>
+</body>

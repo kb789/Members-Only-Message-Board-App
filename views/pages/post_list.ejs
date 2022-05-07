@@ -1,0 +1,110 @@
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('../partials/header'); %></header>
+
+    <main>
+   
+      <div
+        class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 mx-auto text-center max-w-3xl px-10"
+      >
+      <h2 class="mx-auto">The Clubhouse</h2>
+      <img  class="mx-auto mb-10" src="club.png">
+     
+      
+        <% if (user) {%>
+        <div class="w-1/2 mx-auto text-center">
+          <h2
+            class="text-center text-3xl mb-5 font-extrabold tracking-tight text-gray-900"
+          >
+            WELCOME BACK, <%= user.username %>
+          </h2>
+        </div>
+        <% } %>
+        <% if (user) {%>
+          <form action="/add-post" class="w-1/2 mx-auto mt-10 mb-8 text-center">
+            <button
+              class="text-sky-500 border-2 border-sky-500 hover:bg-sky-400 hover:text-white active:bg-sky-500 font-bold uppercase px-5 py-2 rounded-full outline-none focus:outline-none mr-1 mb-5 ease-linear transition-all duration-150"
+              type="submit"
+            >
+              Post a New Message
+            </button>
+          </form>
+          
+          <% } %>
+        <table
+          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+        >
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          >
+            <tr>
+              <th scope="col" class="px-6 py-3">Title</th>
+              <th scope="col" class="px-6 py-3">Text</th>
+              <th scope="col" class="px-6 py-3">Date</th>
+              <% if (user && user.status===true) {%>
+              <th scope="col" class="px-6 py-3">Author</th>
+              <% } %>
+              <% if (user && user.admin===true) {%>
+                <th scope="col" class="px-6 py-3"></th>
+                <% } %>
+            </tr>
+          </thead>
+          <tbody>
+            <% post_list.forEach(function(post) { %>
+            <tr
+              class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
+            >
+              <th
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+              >
+                <%= post.title %>
+              </th>
+
+              <td class="px-6 py-4"> <%= post.text %></td>
+              <% 
+              var monthNames = [
+                "January", "February", "March",
+                "April", "May", "June", "July",
+                "August", "September", "October",
+                "November", "December"
+                 ];
+              var d = post.timestamp.getDate();
+              var m = monthNames[post.timestamp.getMonth()];
+              var y = post.timestamp.getFullYear();
+              var t= post.timestamp.toLocaleTimeString();
+              %>
+              <td class="px-6 py-4"> <%= m+ ` ` +d+ `, ` +y + `, ` + t%></td>
+               
+              <% if (user && user.status===true) {%>
+              <td class="px-6 py-4"><%= post.user %></td>
+              <% } %>
+              <% if (user && user.admin===true) {%>
+                <td class="px-6 py-4">
+                  <form action="/post/<%= post._id %>/delete" method="post">
+                    <button
+                      name="delete"
+                      value="delete"
+                      class="bg-red-800 hover:bg-red-900 text-white font-semibold py-1 px-2 mt-3 border border-gray-400 rounded shadow">
+                        Delete
+                      
+</button>
+                    
+                    
+                  </form>
+
+                </td>
+                <% } %>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+       
+      </div>
+    </main>
+  </body>
+</html>
