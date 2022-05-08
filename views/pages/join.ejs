@@ -9,14 +9,15 @@
   >
     The Club
   </h1>
+
   <% if (user && user.status === false) {%>
-  <h1
-    class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
-  >
-    Join the Club!
-  </h1>
+  <h2 class="mx-auto text-center text-2xl">Are you a member?</h2>
+  <img class="mx-auto mb-10" src="door.png" />
+
   <form action="/join" method="POST" class="w-1/2 mx-auto mt-10 text-center">
-    <label for="secret" class="block mb-3">Enter the secret password</label>
+    <label for="secret" class="block mb-3"
+      >Enter the secret password to enter</label
+    >
     <input
       name="secret"
       placeholder="secret"
@@ -24,7 +25,7 @@
       class="w-full p-2 mb-3 border border-gray-400 border-solid"
     />
 
-    <button class="p-3 pl-5 pr-5 mt-5 text-white bg-green-500 rounded-lg">
+    <button class="p-3 pl-5 pr-5 mt-5 text-white bg-sky-400 rounded-lg">
       Submit
     </button>
   </form>
@@ -34,12 +35,13 @@
   >
     You're in the Club!
   </h1>
-
+  <img class="mx-auto mb-10" src="thumbsup.png" />
   <% } else {%>
   <h1
     class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
   >
     Please sign up to join the Club!
   </h1>
+  <img class="mx-auto mb-10" src="key.png" />
   <% } %>
 </body>

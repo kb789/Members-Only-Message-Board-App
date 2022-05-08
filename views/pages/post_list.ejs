@@ -43,7 +43,9 @@
             <tr>
               <th scope="col" class="px-6 py-3">Title</th>
               <th scope="col" class="px-6 py-3">Text</th>
+            
               <th scope="col" class="px-6 py-3">Date</th>
+              
               <% if (user && user.status===true) {%>
               <th scope="col" class="px-6 py-3">Author</th>
               <% } %>
@@ -77,8 +79,9 @@
               var y = post.timestamp.getFullYear();
               var t= post.timestamp.toLocaleTimeString();
               %>
+              
               <td class="px-6 py-4"> <%= m+ ` ` +d+ `, ` +y + `, ` + t%></td>
-               
+              
               <% if (user && user.status===true) {%>
               <td class="px-6 py-4"><%= post.user %></td>
               <% } %>

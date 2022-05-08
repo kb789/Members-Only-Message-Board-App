@@ -10,11 +10,9 @@
     The Club
   </h1>
   <% if (user && user.admin === false) {%>
-  <h1
-    class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
-  >
-    Admin
-  </h1>
+  <h2 class="mx-auto text-center text-2xl">Staff Only</h2>
+  <img class="mx-auto mb-10" src="rope.png" />
+
   <form action="/admin" method="POST" class="w-1/2 mx-auto mt-10 text-center">
     <label for="secret" class="block mb-3">Enter the admin password</label>
     <input
@@ -35,11 +33,14 @@
     You are an admin
   </h1>
 
-  <% } else {%>
+  <img class="mx-auto mb-10" src="crown.png" />
+
+  C <% } else {%>
   <h1
     class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
   >
     You must be signed in to enter your admin password
   </h1>
+  <img class="mx-auto mb-10" src="closedlock.png" />
   <% } %>
 </body>
