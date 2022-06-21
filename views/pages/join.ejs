@@ -10,18 +10,23 @@
     The Club
   </h1>
 
-  <% if (user && user.status === false) {%>
+  <% if (user && user.status === false) {%> <% if (errors.length>0 ) { %>
+
   <h2 class="mx-auto text-center text-2xl">Are you a member?</h2>
   <img class="mx-auto mb-10" src="door.png" />
 
   <form action="/join" method="POST" class="w-1/2 mx-auto mt-10 text-center">
+    <p class="text-red-500">Error(s):</p>
+    <ul class="mb-5 text-red-500">
+      <li><%= errors[0] %></li>
+    </ul>
     <label for="secret" class="block mb-3"
-      >Enter the secret password to enter</label
+      >Enter the secret password to discover who wrote the messages</label
     >
     <input
       name="secret"
       placeholder="secret"
-      type="text"
+      type="password"
       class="w-full p-2 mb-3 border border-gray-400 border-solid"
     />
 
@@ -29,7 +34,26 @@
       Submit
     </button>
   </form>
-  <% } else if (user && user.status === true) {%>
+  <% } else { %>
+  <h2 class="mx-auto text-center text-2xl">Are you a member?</h2>
+  <img class="mx-auto mb-10" src="door.png" />
+
+  <form action="/join" method="POST" class="w-1/2 mx-auto mt-10 text-center">
+    <label for="secret" class="block mb-3"
+      >Enter the secret password to discover who wrote the messages</label
+    >
+    <input
+      name="secret"
+      placeholder="secret"
+      type="password"
+      class="w-full p-2 mb-3 border border-gray-400 border-solid"
+    />
+
+    <button class="p-3 pl-5 pr-5 mt-5 text-white bg-sky-400 rounded-lg">
+      Submit
+    </button>
+  </form>
+  <% } %> <% } else if (user && user.status === true) {%>
   <h1
     class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
   >
@@ -40,7 +64,7 @@
   <h1
     class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
   >
-    Please sign up to join the Club!
+    You must be signed in to join the Club!
   </h1>
   <img class="mx-auto mb-10" src="key.png" />
   <% } %>

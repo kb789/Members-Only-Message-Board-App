@@ -7,12 +7,29 @@
     <header><%- include('../partials/header'); %></header>
 
   <body>
-    <h1
+    <% if (typeof user !== 'undefined') {%>
+      <h1
+        class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
+      >
+        You are logged in
+      </h1>
+      <img class="mx-auto mb-10" src="check.png" />
+      <% } else { %>
+    
+        <h1
       class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
     >
       Sign up to join the club
     </h1>
+    
+
     <h2 class="mx-auto text-center text-2xl">And post a message</h2>
+    <% if (typeof duplicate !== 'undefined') {%>
+      <h1 class="text-center text-1xl mb-10 font-extrabold tracking-tight text-gray-900 mt-5">
+        Username taken. Please try again
+      </h1>
+      <% } else { %>
+      
     <form action="/sign_up" method="POST" class="w-1/2 mx-auto mt-10 text-center">
       <label for="username" class="block mb-3">First Name</label>
       <input name="firstname" placeholder="first name" type="text" class="w-full p-2 mb-3 border border-gray-400 border-solid" />
@@ -22,7 +39,11 @@
       <input name="username" placeholder="username" type="text" class="w-full p-2 mb-3 border border-gray-400 border-solid"/>
       <label for="password" class="block mb-3">Password</label>
       <input name="password" placeholder="password" type="password" class="w-full p-2 mb-3 border border-gray-400 border-solid"/>
+      <label for="passwordconf" class="block mb-3">Confirm Password</label>
+      <input name="passwordconf" placeholder="confirm password" type="password" class="w-full p-2 mb-3 border border-gray-400 border-solid"/>
       <button class="p-3 pl-5 pr-5 mt-5 text-white bg-sky-400 rounded-lg">Sign Up</button>
     </form>
+    <% } %>
+    <% } %>
   </body>
 </html>

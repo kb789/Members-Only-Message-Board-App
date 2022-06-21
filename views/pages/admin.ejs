@@ -9,16 +9,23 @@
   >
     The Club
   </h1>
-  <% if (user && user.admin === false) {%>
+  <% if (user && user.admin === false) {%> <% if (errors.length>0 ) { %>
+
   <h2 class="mx-auto text-center text-2xl">Staff Only</h2>
   <img class="mx-auto mb-10" src="rope.png" />
 
   <form action="/admin" method="POST" class="w-1/2 mx-auto mt-10 text-center">
-    <label for="secret" class="block mb-3">Enter the admin password</label>
+    <p class="text-red-500">Error(s):</p>
+    <ul class="mb-5 text-red-500">
+      <li><%= errors[0] %></li>
+    </ul>
+    <label for="secret" class="block mb-3"
+      >Enter the admin password to delete messages</label
+    >
     <input
       name="admin"
       placeholder="admin"
-      type="text"
+      type="password"
       class="w-full p-2 mb-3 border border-gray-400 border-solid"
     />
 
@@ -26,7 +33,28 @@
       Submit
     </button>
   </form>
-  <% } else if (user && user.admin === true) {%>
+
+  <% } else { %>
+  <h2 class="mx-auto text-center text-2xl">Staff Only</h2>
+  <img class="mx-auto mb-10" src="rope.png" />
+
+  <form action="/admin" method="POST" class="w-1/2 mx-auto mt-10 text-center">
+    <label for="secret" class="block mb-3"
+      >Enter the admin password to delete messages</label
+    >
+    <input
+      name="admin"
+      placeholder="admin"
+      type="password"
+      class="w-full p-2 mb-3 border border-gray-400 border-solid"
+    />
+
+    <button class="p-3 pl-5 pr-5 mt-5 text-white bg-green-500 rounded-lg">
+      Submit
+    </button>
+  </form>
+
+  <% } %> <% } else if (user && user.admin === true) {%>
   <h1
     class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
   >

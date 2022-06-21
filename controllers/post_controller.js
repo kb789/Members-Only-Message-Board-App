@@ -1,24 +1,40 @@
 const Post = require("../models/post");
 const User = require("../models/user");
 const passport = require("passport");
+const { body, validationResult } = require("express-validator");
 
 exports.get_new_post = (req, res) =>
-  res.render("views/pages/post_form", { user: req.user });
+  res.render("views/pages/post_form", { user: req.user, errors: [] });
 
-exports.add_new_post = (req, res, next) => {
-  console.log(req.user);
-  const user = new Post({
-    title: req.body.title,
-    text: req.body.message,
-    user: req.user.username,
-  }).save((err) => {
-    if (err) {
-      return next(err);
+exports.add_new_post = [
+  body("message", "Text required").trim().isLength({ min: 1 }).escape(),
+  body("title", "Title required").trim().isLength({ min: 1 }).escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      console.log(errors);
+      //res.render('genre_form', { title: 'Create Genre', genre: genre, errors: errors.array()});
+
+      res.render("views/pages/post_form", {
+        user: req.user,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const user = new Post({
+        title: req.body.title,
+        text: req.body.message,
+        user: req.user.username,
+      }).save((err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect("/");
+      });
     }
-    res.render("views/pages/index", { user: req.user });
-  });
-};
-
+  },
+];
 exports.post_list = function (req, res) {
   Post.find({}, "")
     .sort({ timestamp: 1 })
@@ -38,7 +54,7 @@ exports.post_list = function (req, res) {
 };
 
 exports.get_join = function (req, res) {
-  res.render("views/pages/join", { user: req.user });
+  res.render("views/pages/join", { user: req.user, errors: [] });
 };
 
 exports.post_join = function (req, res) {
@@ -59,12 +75,16 @@ exports.post_join = function (req, res) {
     });
   } else {
     console.log("didn't work");
+    res.render("views/pages/join", {
+      user: req.user,
+      errors: ["Password failed. Please try again."],
+    });
   }
   res.redirect("/");
 };
 
 exports.get_admin = function (req, res) {
-  res.render("views/pages/admin", { user: req.user });
+  res.render("views/pages/admin", { user: req.user, errors: [] });
 };
 
 exports.post_admin = function (req, res) {
@@ -86,6 +106,10 @@ exports.post_admin = function (req, res) {
     });
   } else {
     console.log("didn't work");
+    res.render("views/pages/admin", {
+      user: req.user,
+      errors: ["Password failed. Please try again."],
+    });
   }
   res.redirect("/");
 };
