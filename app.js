@@ -10,6 +10,8 @@ const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
+const flash = require("express-flash");
+
 const indexRouter = require("./routes/index");
 const User = require("./models/user");
 
@@ -67,6 +69,9 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(flash());
+
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

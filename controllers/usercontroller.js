@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
-const { check, validationResult } = require('express-validator');
+const { body, check, validationResult } = require("express-validator");
 
 exports.index = function (req, res) {
   res.render("views/pages/index", { user: req.user });
@@ -12,18 +12,32 @@ exports.sign_up_get = (req, res) =>
 
 exports.sign_up_post = (req, res, next) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
 
+  if (!errors.isEmpty()) {
+    let error = ["SORRY, YOUR SIGN UP FAILED:"];
+    errors.errors.forEach((err) => {
+      error.push(err.msg);
+    });
+    error.push("PLEASE RETURN TO THE SIGNUP PAGE AND TRY AGAIN");
+
+    res.render("views/pages/sign-up-form", {
+      error: error,
+    });
+  }
+  if (req.body.password != req.body.passwordconf) {
+    res.render("views/pages/sign-up-form", {
+      error: ["Passwords don't match. Please try again."],
+    });
+  }
   User.findOne({ username: req.body.username }, function (err, results) {
     if (err) {
       return next(err);
     }
     console.log(results);
     if (results !== null) {
-      console.log("username taken");
-      res.render("views/pages/sign-up-form", { duplicate: true });
+      res.render("views/pages/sign-up-form", {
+        error: ["Username taken. Please try again."],
+      });
     } else {
       bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
         if (err) {
@@ -50,13 +64,32 @@ exports.log_in_get = (req, res, next) => {
   res.render("views/pages/log-in", { user: req.user });
 };
 
-exports.log_in_post = (req, res, next) => {
-  const handler = passport.authenticate("local", {
-    successRedirect: "/", // redirect to the secure profile section
-    failureRedirect: "/", // redirect back to the signup page if there is an error
-  });
-  handler(req, res, next);
-};
+exports.log_in_post = [
+  body("username", "Username required").trim().isLength({ min: 1 }),
+  body("password", "Password required").trim().isLength({ min: 1 }),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      console.log(errors);
+      //res.render('genre_form', { title: 'Create Genre', genre: genre, errors: errors.array()});
+
+      res.render("views/pages/log-in", {
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const handler = passport.authenticate("local", {
+        
+        successRedirect: "/",
+        failureRedirect: "/log-in",
+        failureFlash: true,
+      });
+
+      handler(req, res, next);
+    }
+  },
+];
 
 exports.log_out_get = (req, res) => {
   console.log(req.user);

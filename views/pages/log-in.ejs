@@ -9,13 +9,68 @@
   >
     Log in to the Club
   </h1>
-  <% if (user) {%>
+  <% if (typeof user !== 'undefined') {%>
   <h1
     class="text-center text-3xl mb-10 font-extrabold tracking-tight text-gray-900"
   >
     You are logged in
   </h1>
   <img class="mx-auto mb-10" src="check.png" />
+  <% } else if (typeof errors !== 'undefined' ) {%> 
+    
+    <form action="/log-in" method="POST" class="w-1/2 mx-auto mt-10 text-center">
+      <p class="text-red-500">Error(s):</p>
+      <ul class="mb-5 text-red-500">
+        <% for(var i=0; i<errors.length; i++) {%>
+           <li><%= errors[i].msg %></li>
+        <% } %>
+        </ul>
+       
+      <label for="username" class="block mb-3">Username</label>
+      <input
+        name="username"
+        placeholder="username"
+        type="text"
+        class="w-full p-2 mb-3 border border-gray-400 border-solid"
+      />
+      <label for="password" class="block mb-3">Password</label>
+      <input
+        name="password"
+        placeholder="password"
+        type="password"
+        class="w-full p-2 mb-3 border border-gray-400 border-solid"
+      />
+      <button class="p-3 pl-5 pr-5 mt-5 text-white bg-sky-400 rounded-lg">
+        Log In
+      </button>
+    </form>
+    <% } else if (messages.error) {%> 
+
+      <form action="/log-in" method="POST" class="w-1/2 mx-auto mt-10 text-center">
+        <p class="text-red-500">Error(s):</p>
+        <p class="mb-5 text-red-500">
+          <%= messages.error %>
+        </p>
+        
+        <label for="username" class="block mb-3">Username</label>
+        <input
+          name="username"
+          placeholder="username"
+          type="text"
+          class="w-full p-2 mb-3 border border-gray-400 border-solid"
+        />
+        <label for="password" class="block mb-3">Password</label>
+        <input
+          name="password"
+          placeholder="password"
+          type="password"
+          class="w-full p-2 mb-3 border border-gray-400 border-solid"
+        />
+        <button class="p-3 pl-5 pr-5 mt-5 text-white bg-sky-400 rounded-lg">
+          Log In
+        </button>
+      </form>
+    
   <% } else { %>
   <form action="/log-in" method="POST" class="w-1/2 mx-auto mt-10 text-center">
     <label for="username" class="block mb-3">Username</label>

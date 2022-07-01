@@ -24,10 +24,12 @@
     
 
     <h2 class="mx-auto text-center text-2xl">And post a message</h2>
-    <% if (typeof duplicate !== 'undefined') {%>
-      <h1 class="text-center text-1xl mb-10 font-extrabold tracking-tight text-gray-900 mt-5">
-        Username taken. Please try again
+    <% if (typeof error !== 'undefined') {%>
+     <% error.forEach(function(err) { %>
+      <h1 class="text-center text-1xl mb-10 font-extrabold tracking-tight text-red-500 mt-7">
+        <%= err %>
       </h1>
+      <% }) %>
       <% } else { %>
       
     <form action="/sign_up" method="POST" class="w-1/2 mx-auto mt-10 text-center">

@@ -7,8 +7,8 @@ exports.get_new_post = (req, res) =>
   res.render("views/pages/post_form", { user: req.user, errors: [] });
 
 exports.add_new_post = [
-  body("message", "Text required").trim().isLength({ min: 1 }).escape(),
-  body("title", "Title required").trim().isLength({ min: 1 }).escape(),
+  body("message", "Text required").trim().isLength({ min: 1 }),
+  body("title", "Title required").trim().isLength({ min: 1 }),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
