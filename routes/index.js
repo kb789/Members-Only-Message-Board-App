@@ -15,10 +15,6 @@ var loginValidate = [
   check("password")
     .isLength({ min: 8 })
     .withMessage("Password Must Be at Least 8 Characters")
-    .matches("[0-9]")
-    .withMessage("Password Must Contain a Number")
-    .matches("[A-Z]")
-    .withMessage("Password Must Contain an Uppercase Letter")
     .trim()
     .escape(),
 ];
@@ -49,5 +45,8 @@ router.get("/admin", post_controller.get_admin);
 router.post("/admin", post_controller.post_admin);
 
 router.post("/post/:id/delete", post_controller.delete_post);
+
+router.get("/quiz", post_controller.get_quiz);
+
 
 module.exports = router;

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <header><%- include('../partials/header_h'); %></header>
+
+    <% if (user) {%>
+    <div class="w-1/2 mx-auto mt-10 text-center">
+      <h1
+        class="text-center text-2xl mb-10 font-bold tracking-tight text-gray-900"
+      >
+        Answer the Trivia Question Correctly <br />to Get the Secret Password
+      </h1>
+      <div
+        class="mb-10 p-8 bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col"
+        id="ques"
+      >
+        <p class="mb-6 text-gray-700 uppercase">TOPIC: <%= category %></p>
+        <h3 class="text-2xl font-semibold text-gray-900 mb-6">
+          <%= question %>
+        </h3>
+
+        <ul class="grid gap-6 w-full md:grid-cols-2 pt-5">
+          <li>
+            <input
+              type="radio"
+              id="hosting-small"
+              name="answer"
+              value="true"
+              class="hidden peer"
+              required
+            />
+            <label
+              for="hosting-small"
+              class="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-sky-400 peer-checked:border-sky-400 peer-checked:text-sky-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+            >
+              <div class="block">
+                <div class="w-full text-lg font-semibold">True</div>
+              </div>
+              <svg
+                aria-hidden="true"
+                class="ml-3 w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="hosting-big"
+              name="answer"
+              value="false"
+              class="hidden peer"
+            />
+            <label
+              for="hosting-big"
+              class="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-sky-400 peer-checked:border-sky-400 peer-checked:text-sky-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+            >
+              <div class="block">
+                <div class="w-full text-lg font-semibold">False</div>
+              </div>
+              <svg
+                aria-hidden="true"
+                class="ml-3 w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </label>
+          </li>
+        </ul>
+        <br />
+        <br />
+        <button
+          class="bg-sky-400 text-white hover:bg-white hover:text-sky-400 hover: border border-sky-400 font-bold uppercase px-8 py-3 rounded-full outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+          onclick="functionToExecute()"
+        >
+          SUBMIT ANSWER
+        </button>
+      </div>
+      <p class="mb-6 text-gray-700" id="result"></p>
+    </div>
+    <% } else { %> <%} %>
+  </body>
+  <script>
+    function functionToExecute() {
+      var correct_answer = '<%- JSON.stringify(correct_answer) %>';
+      var ele = document.getElementsByName('answer');
+
+      for (i = 0; i < ele.length; i++) {
+        if (ele[i].checked) {
+          if (
+            (ele[i].value === 'true' &&
+              correct_answer.replace(/['"]+/g, '') === 'True') ||
+            (ele[i].value === 'false' &&
+              correct_answer.replace(/['"]+/g, '') === 'False')
+          ) {
+            const element = document.getElementById('ques');
+            element.remove();
+            document.getElementById('result').innerHTML =
+              'That is correct! The secret password is: ' +
+              '<%- JSON.stringify(password) %>'
+                .replace(/['"]+/g, '')
+                .toLowerCase();
+          } else {
+            const element = document.getElementById('ques');
+            element.remove();
+            document.getElementById('result').innerHTML =
+              'Sorry, that is incorrect.  <a class=underline href=/quiz>Please try again!</a>';
+          }
+        }
+      }
+    }
+  </script>
+</html>

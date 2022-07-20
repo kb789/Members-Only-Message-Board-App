@@ -1,14 +1,16 @@
-const Post = require("../models/post");
-const User = require("../models/user");
-const passport = require("passport");
-const { body, validationResult } = require("express-validator");
+const Post = require('../models/post');
+const User = require('../models/user');
+const passport = require('passport');
+const { body, validationResult } = require('express-validator');
+const axios = require('axios');
+const { response } = require('express');
 
 exports.get_new_post = (req, res) =>
-  res.render("views/pages/post_form", { user: req.user, errors: [] });
+  res.render('views/pages/post_form', { user: req.user, errors: [] });
 
 exports.add_new_post = [
-  body("message", "Text required").trim().isLength({ min: 1 }),
-  body("title", "Title required").trim().isLength({ min: 1 }),
+  body('message', 'Text required').trim().isLength({ min: 1 }),
+  body('title', 'Title required').trim().isLength({ min: 1 }),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -16,7 +18,7 @@ exports.add_new_post = [
       console.log(errors);
       //res.render('genre_form', { title: 'Create Genre', genre: genre, errors: errors.array()});
 
-      res.render("views/pages/post_form", {
+      res.render('views/pages/post_form', {
         user: req.user,
         errors: errors.array(),
       });
@@ -30,13 +32,13 @@ exports.add_new_post = [
         if (err) {
           return next(err);
         }
-        res.redirect("/");
+        res.redirect('/');
       });
     }
   },
 ];
 exports.post_list = function (req, res) {
-  Post.find({}, "")
+  Post.find({}, '')
     .sort({ timestamp: 1 })
     .exec(function (err, list_posts) {
       if (err) {
@@ -46,7 +48,7 @@ exports.post_list = function (req, res) {
         });
       }
       //Successful, so render
-      res.render("views/pages/post_list", {
+      res.render('views/pages/post_list', {
         post_list: list_posts,
         user: req.user,
       });
@@ -54,7 +56,7 @@ exports.post_list = function (req, res) {
 };
 
 exports.get_join = function (req, res) {
-  res.render("views/pages/join", { user: req.user, errors: [] });
+  res.render('views/pages/join', { user: req.user, errors: [] });
 };
 
 exports.post_join = function (req, res) {
@@ -75,16 +77,16 @@ exports.post_join = function (req, res) {
     });
   } else {
     console.log("didn't work");
-    res.render("views/pages/join", {
+    res.render('views/pages/join', {
       user: req.user,
-      errors: ["Password failed. Please try again."],
+      errors: ['Password failed. Please try again.'],
     });
   }
-  res.redirect("/");
+  res.redirect('/join');
 };
 
 exports.get_admin = function (req, res) {
-  res.render("views/pages/admin", { user: req.user, errors: [] });
+  res.render('views/pages/admin', { user: req.user, errors: [] });
 };
 
 exports.post_admin = function (req, res) {
@@ -106,12 +108,12 @@ exports.post_admin = function (req, res) {
     });
   } else {
     console.log("didn't work");
-    res.render("views/pages/admin", {
+    res.render('views/pages/admin', {
       user: req.user,
-      errors: ["Password failed. Please try again."],
+      errors: ['Password failed. Please try again.'],
     });
   }
-  res.redirect("/");
+  res.redirect('/admin');
 };
 
 exports.delete_post = function (req, res) {
@@ -122,6 +124,31 @@ exports.delete_post = function (req, res) {
         error: err,
       });
     }
-    return res.redirect("/");
+    return res.redirect('/');
   });
+};
+
+exports.get_quiz = function (req, res, next) {
+  axios
+    .get('https://opentdb.com/api.php?amount=1&difficulty=easy&type=boolean')
+    .then((response) => {
+      const category = response.data.results[0].category;
+      const question = response.data.results[0].question.replace(
+        /&quot;/g,
+        '"'
+      );
+      const correct_answer = response.data.results[0].correct_answer;
+      const incorrect_answer = response.data.results[0].incorrect_answers[0];
+      res.render('views/pages/quiz', {
+        user: req.user,
+        errors: [],
+        category: category,
+        question: question,
+        correct_answer: correct_answer,
+        password: '$%hardtoguess',
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
