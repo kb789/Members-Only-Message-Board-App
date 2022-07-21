@@ -1,0 +1,16 @@
+body {
+  padding-top: 50px;
+}
+
+.addedit:hover {
+  opacity: 0.75;
+}
+
+h2 {
+  font-family: 'Permanent Marker', cursive;
+}
+
+.secret {
+  font-family: 'Permanent Marker', cursive;
+}
+

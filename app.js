@@ -1,19 +1,19 @@
-const express = require("express");
-const path = require("path");
-const bodyParser = require("body-parser");
-require("dotenv").config();
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+require('dotenv').config();
 
-const session = require("express-session");
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-const flash = require("express-flash");
+const flash = require('express-flash');
 
-const indexRouter = require("./routes/index");
-const User = require("./models/user");
+const indexRouter = require('./routes/index');
+const User = require('./models/user');
 
 const Schema = mongoose.Schema;
 
@@ -21,11 +21,11 @@ const mongoDb = process.env.MONGO;
 
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
-db.on("error", console.error.bind(console, "mongo connection error"));
+db.on('error', console.error.bind(console, 'mongo connection error'));
 
 const app = express();
-app.set("views", __dirname);
-app.set("view engine", "ejs");
+app.set('views', __dirname);
+app.set('view engine', 'ejs');
 
 passport.use(
   new LocalStrategy((username, password, done) => {
@@ -34,7 +34,7 @@ passport.use(
         return done(err);
       }
       if (!user) {
-        return done(null, false, { message: "Incorrect username" });
+        return done(null, false, { message: 'Incorrect username' });
       }
       bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
@@ -42,7 +42,7 @@ passport.use(
           return done(null, user);
         } else {
           // passwords do not match!
-          return done(null, false, { message: "Incorrect password" });
+          return done(null, false, { message: 'Incorrect password' });
         }
       });
     });
@@ -59,7 +59,7 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
-app.use(express.static("public"));
+app.use(express.static('public'));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -76,15 +76,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(express.static(path.join(__dirname, 'dist')));
+
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
   next();
 });
 
-app.use("/", indexRouter);
+app.use('/', indexRouter);
 
 app.use((req, res, next) => {
-  res.status(404).send("<h1>Page not found on the server</h1>");
+  res.status(404).send('<h1>Page not found on the server</h1>');
 });
 
-app.listen(3000, () => console.log("app listening on port 3000!"));
+app.listen(3000, () => console.log('app listening on port 3000!'));

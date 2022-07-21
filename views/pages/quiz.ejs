@@ -117,7 +117,8 @@
               'That is correct! The secret password is: ' +
               '<%- JSON.stringify(password) %>'
                 .replace(/['"]+/g, '')
-                .toLowerCase();
+                .toLowerCase() +
+              '<p>Return to  <a class=underline href=/join>Join</a></p>';
           } else {
             const element = document.getElementById('ques');
             element.remove();
