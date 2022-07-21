@@ -1,31 +1,31 @@
-const User = require("../models/user");
-const passport = require("passport");
-const bcrypt = require("bcryptjs");
-const { body, check, validationResult } = require("express-validator");
+const User = require('../models/user');
+const passport = require('passport');
+const bcrypt = require('bcryptjs');
+const { body, check, validationResult } = require('express-validator');
 
 exports.index = function (req, res) {
-  res.render("views/pages/index", { user: req.user });
+  res.render('views/pages/index', { user: req.user });
 };
 
 exports.sign_up_get = (req, res) =>
-  res.render("views/pages/sign-up-form", { user: req.user });
+  res.render('views/pages/sign-up-form', { user: req.user });
 
 exports.sign_up_post = (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    let error = ["SORRY, YOUR SIGN UP FAILED:"];
+    let error = ['SORRY, YOUR SIGN UP FAILED:'];
     errors.errors.forEach((err) => {
       error.push(err.msg);
     });
-    error.push("PLEASE RETURN TO THE SIGNUP PAGE AND TRY AGAIN");
+    error.push('PLEASE RETURN TO THE SIGNUP PAGE AND TRY AGAIN');
 
-    res.render("views/pages/sign-up-form", {
+    res.render('views/pages/sign-up-form', {
       error: error,
     });
   }
   if (req.body.password != req.body.passwordconf) {
-    res.render("views/pages/sign-up-form", {
+    res.render('views/pages/sign-up-form', {
       error: ["Passwords don't match. Please try again."],
     });
   }
@@ -35,8 +35,8 @@ exports.sign_up_post = (req, res, next) => {
     }
     console.log(results);
     if (results !== null) {
-      res.render("views/pages/sign-up-form", {
-        error: ["Username taken. Please try again."],
+      res.render('views/pages/sign-up-form', {
+        error: ['Username taken. Please try again.'],
       });
     } else {
       bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
@@ -53,20 +53,27 @@ exports.sign_up_post = (req, res, next) => {
           if (err) {
             return next(err);
           }
+          const handler = passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/log-in',
+            failureFlash: true,
+          });
+          handler(req, res, next);
         });
-        res.render("views/pages/log-in", { user: user });
+
+        //res.render('views/pages/log-in', { user: user });
       });
     }
   });
 };
 
 exports.log_in_get = (req, res, next) => {
-  res.render("views/pages/log-in", { user: req.user });
+  res.render('views/pages/log-in', { user: req.user });
 };
 
 exports.log_in_post = [
-  body("username", "Username required").trim().isLength({ min: 1 }),
-  body("password", "Password required").trim().isLength({ min: 1 }),
+  body('username', 'Username required').trim().isLength({ min: 1 }),
+  body('password', 'Password required').trim().isLength({ min: 1 }),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -74,18 +81,17 @@ exports.log_in_post = [
       console.log(errors);
       //res.render('genre_form', { title: 'Create Genre', genre: genre, errors: errors.array()});
 
-      res.render("views/pages/log-in", {
+      res.render('views/pages/log-in', {
         errors: errors.array(),
       });
       return;
     } else {
-      const handler = passport.authenticate("local", {
-        
-        successRedirect: "/",
-        failureRedirect: "/log-in",
+      const handler = passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/log-in',
         failureFlash: true,
       });
-
+      console.log(req.body);
       handler(req, res, next);
     }
   },
@@ -93,7 +99,7 @@ exports.log_in_post = [
 
 exports.log_out_get = (req, res) => {
   console.log(req.user);
-  if (typeof req.user !== "undefined") {
+  if (typeof req.user !== 'undefined') {
     const update = {
       status: false,
       admin: false,
@@ -110,5 +116,5 @@ exports.log_out_get = (req, res) => {
   }
   req.logout();
 
-  res.redirect("/");
+  res.redirect('/');
 };
