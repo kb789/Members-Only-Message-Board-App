@@ -48,5 +48,7 @@ router.post("/post/:id/delete", post_controller.delete_post);
 
 router.get("/quiz", post_controller.get_quiz);
 
+router.get("/quiz_admin", post_controller.get_quiz_admin);
+
 
 module.exports = router;

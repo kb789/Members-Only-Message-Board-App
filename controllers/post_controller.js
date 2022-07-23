@@ -152,3 +152,28 @@ exports.get_quiz = function (req, res, next) {
       console.log(error);
     });
 };
+
+exports.get_quiz_admin = function (req, res, next) {
+  axios
+    .get('https://opentdb.com/api.php?amount=1&difficulty=medium&type=boolean')
+    .then((response) => {
+      const category = response.data.results[0].category;
+      const question = response.data.results[0].question.replace(
+        /&quot;/g,
+        '"'
+      );
+      const correct_answer = response.data.results[0].correct_answer;
+      const incorrect_answer = response.data.results[0].incorrect_answers[0];
+      res.render('views/pages/quiz_admin', {
+        user: req.user,
+        errors: [],
+        category: category,
+        question: question,
+        correct_answer: correct_answer,
+        password: '$%reallyhardtoguess',
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};

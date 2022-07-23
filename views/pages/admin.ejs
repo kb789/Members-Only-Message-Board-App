@@ -52,6 +52,15 @@
     <button class="p-3 pl-5 pr-5 mt-5 text-white bg-sky-400 rounded-lg">
       Submit
     </button>
+    <p class="mb-6 mt-14 text-gray-700">
+      <span class="secret"> Want to be an admin? </span>
+      <a href="/quiz_admin"
+        ><span class="text-sky-400 font-semibold underline"
+          >Answer a more challenging trivia question correctly</span
+        ></a
+      >
+      <span class="secret"> and we'll give you the admin password.</span>
+    </p>
   </form>
 
   <% } %> <% } else if (user && user.admin === true) {%>
