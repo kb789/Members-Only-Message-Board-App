@@ -14,9 +14,7 @@ exports.add_new_post = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      // There are errors. Render the form again with sanitized values/error messages.
       console.log(errors);
-      //res.render('genre_form', { title: 'Create Genre', genre: genre, errors: errors.array()});
 
       res.render('views/pages/post_form', {
         user: req.user,
@@ -47,7 +45,7 @@ exports.post_list = function (req, res) {
           error: err,
         });
       }
-      //Successful, so render
+
       res.render('views/pages/post_list', {
         post_list: list_posts,
         user: req.user,
@@ -76,8 +74,7 @@ exports.post_join = function (req, res) {
       }
     });
   } else {
-    console.log("didn't work");
-    res.render('views/pages/join', {
+    return res.render('views/pages/join', {
       user: req.user,
       errors: ['Password failed. Please try again.'],
     });
@@ -107,8 +104,7 @@ exports.post_admin = function (req, res) {
       }
     });
   } else {
-    console.log("didn't work");
-    res.render('views/pages/admin', {
+    return res.render('views/pages/admin', {
       user: req.user,
       errors: ['Password failed. Please try again.'],
     });
@@ -133,10 +129,9 @@ exports.get_quiz = function (req, res, next) {
     .get('https://opentdb.com/api.php?amount=1&difficulty=easy&type=boolean')
     .then((response) => {
       const category = response.data.results[0].category;
-      const question = response.data.results[0].question.replace(
-        /&quot;/g,
-        '"'
-      );
+      const question = response.data.results[0].question
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
       const correct_answer = response.data.results[0].correct_answer;
       const incorrect_answer = response.data.results[0].incorrect_answers[0];
       res.render('views/pages/quiz', {
@@ -158,10 +153,9 @@ exports.get_quiz_admin = function (req, res, next) {
     .get('https://opentdb.com/api.php?amount=1&difficulty=medium&type=boolean')
     .then((response) => {
       const category = response.data.results[0].category;
-      const question = response.data.results[0].question.replace(
-        /&quot;/g,
-        '"'
-      );
+      const question = response.data.results[0].question
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
       const correct_answer = response.data.results[0].correct_answer;
       const incorrect_answer = response.data.results[0].incorrect_answers[0];
       res.render('views/pages/quiz_admin', {

@@ -4,7 +4,7 @@
     <%- include('../partials/head'); %>
   </head>
   <body class="container">
-    <header><%- include('../partials/header_h'); %></header>
+    <header><%- include('../partials/header_a'); %></header>
 
     <% if (user) {%>
     <div class="w-1/2 mx-auto mt-10 text-center">
@@ -94,7 +94,10 @@
           SUBMIT ANSWER
         </button>
       </div>
-      <p class="mb-6 text-gray-700" id="result"></p>
+      <p
+        class="mb-6 p-8 text-gray-700 font-bold bg-white border border-gray-200 rounded-2xl shadow-sm"
+        id="result"
+      ></p>
     </div>
     <% } else { %> <%} %>
   </body>
@@ -118,12 +121,12 @@
               '<%- JSON.stringify(password) %>'
                 .replace(/['"]+/g, '')
                 .toLowerCase() +
-              '<p>Return to  <a class=underline href=/join>Join</a></p>';
+              '<p>Return to  <a class=underline href=/admin>Enter the admin password</a></p>';
           } else {
             const element = document.getElementById('ques');
             element.remove();
             document.getElementById('result').innerHTML =
-              'Sorry, that is incorrect.  <a class=underline href=/quiz>Please try again!</a>';
+              'Sorry, that is incorrect.  <a class=underline href=/quiz_admin>Please try again!</a>';
           }
         }
       }

@@ -6,7 +6,7 @@ const post_controller = require("../controllers/post_controller");
 
 const { check, validationResult } = require("express-validator");
 
-//https://medium.com/@osiolabs/how-to-validate-and-sanitize-an-expressjs-form-fc2ee97b9988
+
 
 var loginValidate = [
   // Check Username

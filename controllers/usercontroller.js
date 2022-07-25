@@ -18,7 +18,6 @@ exports.sign_up_post = (req, res, next) => {
     errors.errors.forEach((err) => {
       error.push(err.msg);
     });
-    error.push('PLEASE RETURN TO THE SIGNUP PAGE AND TRY AGAIN');
 
     res.render('views/pages/sign-up-form', {
       error: error,
@@ -33,7 +32,7 @@ exports.sign_up_post = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    console.log(results);
+
     if (results !== null) {
       res.render('views/pages/sign-up-form', {
         error: ['Username taken. Please try again.'],
@@ -60,8 +59,6 @@ exports.sign_up_post = (req, res, next) => {
           });
           handler(req, res, next);
         });
-
-        //res.render('views/pages/log-in', { user: user });
       });
     }
   });
@@ -77,10 +74,6 @@ exports.log_in_post = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      // There are errors. Render the form again with sanitized values/error messages.
-      console.log(errors);
-      //res.render('genre_form', { title: 'Create Genre', genre: genre, errors: errors.array()});
-
       res.render('views/pages/log-in', {
         errors: errors.array(),
       });
@@ -91,14 +84,13 @@ exports.log_in_post = [
         failureRedirect: '/log-in',
         failureFlash: true,
       });
-      console.log(req.body);
+
       handler(req, res, next);
     }
   },
 ];
 
 exports.log_out_get = (req, res) => {
-  console.log(req.user);
   if (typeof req.user !== 'undefined') {
     const update = {
       status: false,

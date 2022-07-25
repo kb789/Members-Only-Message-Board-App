@@ -4,7 +4,7 @@
     <%- include('../partials/head'); %>
   </head>
   <body class="container">
-    <header><%- include('../partials/header_h'); %></header>
+    <header><%- include('../partials/header_j'); %></header>
 
     <% if (user) {%>
     <div class="w-1/2 mx-auto mt-10 text-center">
@@ -94,7 +94,10 @@
           SUBMIT ANSWER
         </button>
       </div>
-      <p class="mb-6 text-gray-700" id="result"></p>
+      <p
+        class="mb-6 p-8 text-gray-700 font-bold bg-white border border-gray-200 rounded-2xl shadow-sm"
+        id="result"
+      ></p>
     </div>
     <% } else { %> <%} %>
   </body>
@@ -107,7 +110,8 @@
         if (ele[i].checked) {
           if (
             (ele[i].value === 'true' &&
-              correct_answer.replace(/['"]+/g, '') === 'True') ||
+              correct_answer.replace(/['"]+/g, '').replace(/['"]+/g, '') ===
+                'True') ||
             (ele[i].value === 'false' &&
               correct_answer.replace(/['"]+/g, '') === 'False')
           ) {
