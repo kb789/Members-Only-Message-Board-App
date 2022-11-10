@@ -19,3 +19,4 @@ The technologies used are Express/Node, EJS, Passport.js for authentication, and
 
 ## APIs Used
 
+The (Open Trivia database)[https://opentdb.com/] API was used as the source for the trivia questions and answers. 
